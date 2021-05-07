@@ -2,8 +2,8 @@
     background-color: #5A8A9D;
     overflow: hidden;
     position: fixed;
-    top: 0;
-    width: 98%;
+    top: 5;
+    width: 96%;
     height: 10%;
     border-radius: 15px;
 }
@@ -16,6 +16,7 @@
     width: 15%;
     background-color: #AFC6CE;
     border-radius: 15px;
+    text-align: center;
 }
 
 #monday {
@@ -46,6 +47,8 @@
     background-color: #AFC6CE;
     border-radius: 15px;
     left: 81%;
+    text-align: center;
+    z-index: 0;
 }
 
 #saturday {
@@ -54,4 +57,11 @@
 
 #sunday {
     top: 55%;
+}
+
+.eventlist {
+    border-style: solid none none none;
+    height: 92%;
+    z-index: 1;
+    width: 100%;
 }
