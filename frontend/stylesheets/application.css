@@ -3,7 +3,7 @@
     overflow: hidden;
     position: fixed;
     top: 0;
-    width: 100%;
+    width: 98%;
     height: 10%;
     border-radius: 15px;
 }
@@ -16,4 +16,24 @@
     width: 15%;
     background-color: #AFC6CE;
     border-radius: 15px;
+}
+
+#monday {
+    left: 1%;
+}
+
+#tuesday {
+    left: 17%;
+}
+
+#wednesday {
+    left: 33%;
+}
+
+#thursday {
+    left: 49%;
+}
+
+#friday {
+    left: 65%;
 }
