@@ -7,7 +7,6 @@ class CreateEvents < ActiveRecord::Migration[4.2]
             t.datetime :ends_at
 
             t.references :user, foreign_key: true
-            t.references :day, foreign_key: true
         end
     end
 end
