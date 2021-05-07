@@ -37,3 +37,21 @@
 #friday {
     left: 65%;
 }
+
+.weekend {
+    overflow: hidden;
+    position: fixed;
+    height: 42%;
+    width: 15%;
+    background-color: #AFC6CE;
+    border-radius: 15px;
+    left: 81%;
+}
+
+#saturday {
+    top: 12%;
+}
+
+#sunday {
+    top: 55%;
+}
