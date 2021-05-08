@@ -10,12 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const saturday = dayListFinder('saturday')
     const sunday = dayListFinder('sunday')
 
-    function dayListFinder(dayName) {
-        document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
-    }
-
-    let user = 1;
-    let users = [];
 
     // Fetch request to get list of all users
     fetch(`http://localhost:3000/users`) .then(function(response) {
@@ -25,15 +19,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     grabEvents();
-
-    function grabEvents() {
-        fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
-            return response.json();
-        }) .then(function(json){
-            let events = json;
-            console.log(events);
-        });
-    }
 
     document.getElementById('previous').addEventListener('click', function() {
         if (user > 1) {
@@ -53,3 +38,53 @@ document.addEventListener("DOMContentLoaded", function() {
         grabEvents();
     });
 });
+
+let user = 1;
+let users = [];
+
+function dayListFinder(dayName) {
+    document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
+}
+
+function grabEvents() {
+    for (const eventlist of document.getElementsByClassName('eventlist')) {
+        removeAllChildren(eventlist);
+    }
+    fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
+        return response.json();
+    }) .then(function(json){
+        let events = json;
+        console.log(events);
+        for (const event of events) {
+            let d = new Date(event.starts_at)
+            let DOW = d.getDay();
+            switch (DOW) {
+                case 0:
+                    break;
+                case 1:
+                    let newLi = document.createElement('li');
+                    newLi.innerHTML = event.name;
+                    monday = document.getElementById(`monday`).getElementsByClassName('eventlist')[0];
+                    monday.appendChild(newLi);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+
+            }
+        }
+    });
+}
+
+function removeAllChildren(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
