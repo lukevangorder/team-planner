@@ -2,12 +2,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     let user = 1;
+    let users = [];
 
     // Fetch request to get list of all users
     fetch(`http://localhost:3000/users`) .then(function(response) {
         return response.json();
     }) .then(function(json){
-        let users = json;
+        users = json;
     });
 
     fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
@@ -26,16 +27,21 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function nextUser() {
-        user += 1;
+    document.getElementById('previous').addEventListener('click', function() {
+        if (user > 1) {
+            user -= 1;
+        } else {
+            user = users.length;
+        }
         grabEvents();
-    }
+    });
 
-    function previousUser() {
-        user -= 1;
+    document.getElementById('next').addEventListener('click', function() {
+        if (user < users.length) {
+            user += 1;
+        } else {
+            user = 1;
+        }
         grabEvents();
-    }
-
-    document.getElementById('previous').addEventListener('click', previousUser());
-    document.getElementById('next').addEventListener('click', nextUser());
+    });
 });
