@@ -24,12 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         users = json;
     });
 
-    fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
-        return response.json();
-    }) .then(function(json){
-        let events = json;
-        console.log(events);
-    });
+    grabEvents();
 
     function grabEvents() {
         fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
@@ -38,12 +33,6 @@ document.addEventListener("DOMContentLoaded", function() {
             let events = json;
             console.log(events);
         });
-    }
-
-    function sortEvents(list) {
-        for (const event of list) {
-            console.log(list);
-        }
     }
 
     document.getElementById('previous').addEventListener('click', function() {
@@ -63,6 +52,4 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         grabEvents();
     });
-
-
 });
