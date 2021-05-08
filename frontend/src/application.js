@@ -1,17 +1,20 @@
-let user = 1;
-let users = [];
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
+
+    let user = 0;
+    let users = [];
 
     // Fetch request to get list of all users
     fetch(`http://localhost:3000/users`) .then(function(response) {
         return response.json();
     }) .then(function(json){
         users = json;
+        grabEvents();
     });
 
-    grabEvents();
+    
 
 
     document.getElementById('previous').addEventListener('click', function() {
@@ -24,10 +27,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById('next').addEventListener('click', function() {
-        if (user < users.length) {
+        if (user < users.length-1) {
             user += 1;
         } else {
-            user = 1;
+            user = 0;
         }
         grabEvents();
     });
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
             addAddBox(add);
         });
     };
-});
+
 
 function addAddBox(node) {
     let newAddBox = document.createElement('div');
@@ -49,6 +52,7 @@ function addAddBox(node) {
         if (node.parentNode.className == 'weekend') {
             newAddBox.style.height = '52%';
         }
+        addSubmitListener(newAddBox);
         node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
     }
 }
@@ -67,8 +71,8 @@ function grabEvents() {
     for (const eventlist of document.getElementsByClassName('eventlist')) {
         removeAllChildren(eventlist);
     }
-    console.log(users[user])
-    fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
+    document.querySelector('h2').innerHTML = `Schedule for ${users[user].name}, ${users[user].role}`
+    fetch(`http://localhost:3000/events/${user+1}`) .then(function(response) {
         return response.json();
     }) .then(function(json){
         let events = json;
@@ -113,3 +117,8 @@ function addForm(node) {
     node.innerHTML = "<form>Event Name: <input type='text' name='name'></input>Event Info: <input type='text' name='info'></input>Starts At: <input type='date' name='starts_at'></input><br> Ends At: <br><input type='date' name='ends_at'></input><br><br><input type='submit'></input></form>";
 }
 
+function addSubmitListener(node) {
+    
+}
+
+});
