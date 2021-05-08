@@ -71,3 +71,12 @@
     width: 100%;
     text-align: left;
 }
+
+.newevent {
+    background-color: whitesmoke;
+    border-color: black;
+    height: 30%;
+    z-index: 2;
+    width: 100%;
+    text-align: left;
+}

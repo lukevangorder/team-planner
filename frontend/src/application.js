@@ -34,11 +34,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     for (const add of document.getElementsByClassName('addbutton')) {
         add.addEventListener('click', function() {
-            console.log('test');
+            addAddBox(add);
         });
     };
 });
 
+function addAddBox(node) {
+    console.log(node.parentNode);
+    let newAddBox = document.createElement('div');
+    newAddBox.className = 'newevent'
+    node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+}
 
 function addChildEvent(dayName, event) {
     let newLi = document.createElement('li');
@@ -47,7 +53,7 @@ function addChildEvent(dayName, event) {
     newP.innerHTML = event.info; 
     day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
     day.appendChild(newLi);
-    day.appendChild(newP);
+    day.appendChild(newP); 
 }
 
 function grabEvents() {
