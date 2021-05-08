@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function addAddBox(node) {
     let newAddBox = document.createElement('div');
     newAddBox.className = 'newevent'
+    addForm(newAddBox);
     if (node.parentNode.querySelector('div').className == 'newevent') {
         node.parentNode.querySelector('div').remove();
     } else {
@@ -104,3 +105,8 @@ function removeAllChildren(parent) {
         parent.removeChild(parent.firstChild);
     }
 }
+
+function addForm(node) {
+    node.innerHTML = "<form>Event Name: <input type='text' name='name'></input>Event Info: <input type='text' name='info'></input>Starts At: <input type='date' name='starts_at'></input><br> Ends At: <br><input type='date' name='ends_at'></input><br><br><input type='submit'></input></form>";
+}
+

@@ -74,7 +74,7 @@
 
 .newevent {
     background-color: whitesmoke;
-    border-color: black;
+    border-style: solid none none none;
     height: 30%;
     z-index: 2;
     width: 100%;
