@@ -9,6 +9,10 @@
     padding-left: 20px;
 }
 
+.topbar a {
+    text-align: right;
+}
+
 .weekday {
     overflow: hidden;
     position: fixed;
