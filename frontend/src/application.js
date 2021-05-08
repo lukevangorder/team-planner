@@ -74,34 +74,38 @@ function grabEvents() {
     }) .then(function(json){
         let events = json;
         for (const event of events) {
-            let d = new Date(event.starts_at)
-            let DOW = d.getDay();
-            switch (DOW) {
-                case 0:
-                    addChildEvent('sunday', event);
-                    break;
-                case 1:
-                    addChildEvent('monday', event);
-                    break;
-                case 2:
-                    addChildEvent('tuesday', event);
-                    break;
-                case 3:
-                    addChildEvent('wednesday', event);
-                    break;
-                case 4:
-                    addChildEvent('thursday', event);
-                    break;
-                case 5:
-                    addChildEvent('friday', event);
-                    break;
-                case 6:
-                    addChildEvent('saturday', event);
-                    break;
-
-            }
+            sortEvents(event);
         }
     });
+}
+
+function sortEvents(event) {
+    let d = new Date(event.starts_at)
+    let DOW = d.getDay();
+        switch (DOW) {
+            case 0:
+                addChildEvent('sunday', event);
+                break;
+            case 1:
+                addChildEvent('monday', event);
+                break;
+            case 2:
+                addChildEvent('tuesday', event);
+                break;
+            case 3:
+                addChildEvent('wednesday', event);
+                break;
+            case 4:
+                addChildEvent('thursday', event);
+                break;
+            case 5:
+                addChildEvent('friday', event);
+                break;
+            case 6:
+                addChildEvent('saturday', event);
+                break;
+        }
+
 }
 
 function removeAllChildren(parent) {
@@ -139,7 +143,7 @@ function addSubmitListener(node) {
         .then(function(json) {
             console.log(json);
             console.log(node.parentNode)
-            //addChildEvent(node.parentNode.id, json)
+            sortEvents(json);
         });
         node.remove();
     });
