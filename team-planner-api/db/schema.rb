@@ -12,18 +12,12 @@
 
 ActiveRecord::Schema.define(version: 3) do
 
-  create_table "days", force: :cascade do |t|
-    t.datetime "starts_at"
-    t.datetime "ends_at"
-  end
-
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.string "info"
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.integer "user_id"
-    t.integer "day_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -31,6 +25,5 @@ ActiveRecord::Schema.define(version: 3) do
     t.string "role"
   end
 
-  add_foreign_key "events", "days"
   add_foreign_key "events", "users"
 end
