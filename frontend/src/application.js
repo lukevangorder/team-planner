@@ -67,19 +67,25 @@ function grabEvents() {
             let DOW = d.getDay();
             switch (DOW) {
                 case 0:
+                    addChildEvent('sunday', event);
                     break;
                 case 1:
                     addChildEvent('monday', event);
                     break;
                 case 2:
+                    addChildEvent('tuesday', event);
                     break;
                 case 3:
+                    addChildEvent('wednesday', event);
                     break;
                 case 4:
+                    addChildEvent('thursday', event);
                     break;
                 case 5:
+                    addChildEvent('friday', event);
                     break;
                 case 6:
+                    addChildEvent('saturday', event);
                     break;
 
             }
