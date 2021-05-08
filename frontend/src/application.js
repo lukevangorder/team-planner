@@ -122,7 +122,7 @@ function addSubmitListener(node) {
             info: document.getElementById('forminfo').value,
             starts_at: document.getElementById('formstart').value,
             ends_at: document.getElementById('formend').value,
-            user: user
+            user_id: user+1
         };
         let configObj = {
             method: "POST",
@@ -138,8 +138,10 @@ function addSubmitListener(node) {
         })
         .then(function(json) {
             console.log(json);
-            addChildEvent(node.parentNode.id, json)
+            console.log(node.parentNode)
+            //addChildEvent(node.parentNode.id, json)
         });
+        node.remove();
     });
 }
 

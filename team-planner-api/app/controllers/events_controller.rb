@@ -2,11 +2,12 @@ class EventsController < ApplicationController
 
     def create
         event = Event.new(event_params)
-        # if event.save
-            render json: event
-        # else
-        #     render json: event.errors
-        # end
+        event.user = User.find(params[:user_id]);
+        if event.save
+            render json: event, except: [:id]
+        else
+            render json: event.errors
+        end
     end
 
     def index
