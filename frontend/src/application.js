@@ -46,6 +46,13 @@ function dayListFinder(dayName) {
     document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
 }
 
+function addChildEvent(dayName, event) {
+    let newLi = document.createElement('li');
+    newLi.innerHTML = event.name;
+    day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
+    day.appendChild(newLi);
+}
+
 function grabEvents() {
     for (const eventlist of document.getElementsByClassName('eventlist')) {
         removeAllChildren(eventlist);
@@ -62,10 +69,7 @@ function grabEvents() {
                 case 0:
                     break;
                 case 1:
-                    let newLi = document.createElement('li');
-                    newLi.innerHTML = event.name;
-                    monday = document.getElementById(`monday`).getElementsByClassName('eventlist')[0];
-                    monday.appendChild(newLi);
+                    addChildEvent('monday', event);
                     break;
                 case 2:
                     break;
