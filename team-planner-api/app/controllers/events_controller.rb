@@ -2,11 +2,11 @@ class EventsController < ApplicationController
 
     def create
         event = Event.new(event_params)
-        if event.save
+        # if event.save
             render json: event
-        else
-            render json: event.errors
-        end
+        # else
+        #     render json: event.errors
+        # end
     end
 
     def index

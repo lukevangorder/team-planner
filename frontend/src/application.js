@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     let user = 0;
@@ -114,11 +111,36 @@ function removeAllChildren(parent) {
 }
 
 function addForm(node) {
-    node.innerHTML = "<form>Event Name: <input type='text' name='name'></input>Event Info: <input type='text' name='info'></input>Starts At: <input type='date' name='starts_at'></input><br> Ends At: <br><input type='date' name='ends_at'></input><br><br><input type='submit'></input></form>";
+    node.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'></input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'></input><br><br><input type='submit'></input></form>";
 }
 
 function addSubmitListener(node) {
-    
+    node.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let formData = {
+            name: document.getElementById('formname').value,
+            info: document.getElementById('forminfo').value,
+            starts_at: document.getElementById('formstart').value,
+            ends_at: document.getElementById('formend').value,
+            user: user
+        };
+        let configObj = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify(formData)
+        };
+
+        fetch('http://localhost:3000/events', configObj) .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            console.log(json);
+            addChildEvent(node.parentNode.id, json)
+        });
+    });
 }
 
 });
