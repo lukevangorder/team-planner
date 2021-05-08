@@ -129,9 +129,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json();
             })
             .then(function(json) {
+                console.log(json)
                 sortEvents(json);
             })
             .catch(function(error) {
+                console.log(json);
+                console.log(error);
                 alert(json.errors);
             });
             node.remove();
