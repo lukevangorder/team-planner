@@ -40,10 +40,13 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function addAddBox(node) {
-    console.log(node.parentNode);
     let newAddBox = document.createElement('div');
     newAddBox.className = 'newevent'
-    node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+    if (node.parentNode.querySelector('div').className == 'newevent') {
+        node.parentNode.querySelector('div').remove();
+    } else {
+        node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+    }
 }
 
 function addChildEvent(dayName, event) {
