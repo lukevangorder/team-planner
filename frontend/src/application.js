@@ -46,6 +46,9 @@ function addAddBox(node) {
     if (node.parentNode.querySelector('div').className == 'newevent') {
         node.parentNode.querySelector('div').remove();
     } else {
+        if (node.parentNode.className == 'weekend') {
+            newAddBox.style.height = '52%';
+        }
         node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
     }
 }
