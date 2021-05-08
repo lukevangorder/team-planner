@@ -1,3 +1,7 @@
+let user = 1;
+let users = [];
+
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch request to get list of all users
@@ -8,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     grabEvents();
+
 
     document.getElementById('previous').addEventListener('click', function() {
         if (user > 1) {
@@ -26,10 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         grabEvents();
     });
+
+    for (const add of document.getElementsByClassName('addbutton')) {
+        add.addEventListener('click', function() {
+            console.log('test');
+        });
+    };
 });
 
-let user = 1;
-let users = [];
 
 function addChildEvent(dayName, event) {
     let newLi = document.createElement('li');
@@ -45,11 +54,11 @@ function grabEvents() {
     for (const eventlist of document.getElementsByClassName('eventlist')) {
         removeAllChildren(eventlist);
     }
+    console.log(users[user])
     fetch(`http://localhost:3000/events/${user}`) .then(function(response) {
         return response.json();
     }) .then(function(json){
         let events = json;
-        console.log(events);
         for (const event of events) {
             let d = new Date(event.starts_at)
             let DOW = d.getDay();
