@@ -1,6 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    
+
+
+    const monday = dayListFinder('monday')
+    const tuesday = dayListFinder('tuesday')
+    const wednesday = dayListFinder('wednesday')
+    const thursday = dayListFinder('thursday')
+    const friday = dayListFinder('friday')
+    const saturday = dayListFinder('saturday')
+    const sunday = dayListFinder('sunday')
+
+    function dayListFinder(dayName) {
+        document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
+    }
+
     let user = 1;
     let users = [];
 
@@ -27,6 +40,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    function sortEvents(list) {
+        for (const event of list) {
+            console.log(list);
+        }
+    }
+
     document.getElementById('previous').addEventListener('click', function() {
         if (user > 1) {
             user -= 1;
@@ -44,4 +63,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         grabEvents();
     });
+
+
 });
