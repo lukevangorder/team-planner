@@ -1,16 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-
-
-    const monday = dayListFinder('monday')
-    const tuesday = dayListFinder('tuesday')
-    const wednesday = dayListFinder('wednesday')
-    const thursday = dayListFinder('thursday')
-    const friday = dayListFinder('friday')
-    const saturday = dayListFinder('saturday')
-    const sunday = dayListFinder('sunday')
-
-
     // Fetch request to get list of all users
     fetch(`http://localhost:3000/users`) .then(function(response) {
         return response.json();
@@ -42,15 +31,14 @@ document.addEventListener("DOMContentLoaded", function() {
 let user = 1;
 let users = [];
 
-function dayListFinder(dayName) {
-    document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
-}
-
 function addChildEvent(dayName, event) {
     let newLi = document.createElement('li');
     newLi.innerHTML = event.name;
+    let newP = document.createElement('p');
+    newP.innerHTML = event.info; 
     day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
     day.appendChild(newLi);
+    day.appendChild(newP);
 }
 
 function grabEvents() {
