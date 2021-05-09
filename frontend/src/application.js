@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 })
                 .then(json => sortEvents(json))
-                .catch(err => console.log('butt'));
+                .catch(err => alert('Invalid Event Data. Please make sure all required fields have been filled out'));
             node.remove();
         });
     }
-});
+}); 

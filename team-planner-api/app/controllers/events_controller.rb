@@ -10,6 +10,15 @@ class EventsController < ApplicationController
         end
     end
 
+    def update
+        event = Event.update(event_params)
+        if event.save
+            render json: event, except: [:id], status: :created
+        else
+            render json: event, status: :bad_request
+        end
+    end
+
     def index
         events = Event.all
         render json: events
