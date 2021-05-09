@@ -4,9 +4,9 @@ class EventsController < ApplicationController
         event = Event.new(event_params)
         event.user = User.find(params[:user_id]);
         if event.save
-            render json: event, except: [:id]
+            render json: event, except: [:id], status: :created
         else
-            render json: event.errors
+            render json: event, status: :bad_request
         end
     end
 
@@ -23,7 +23,7 @@ class EventsController < ApplicationController
     private
 
     def event_params
-        params.require(:event).permit(:name, :info, :starts_at, :ends_at, :user)
+        params.require(:event).permit(:name, :info, :starts_at, :ends_at, :user_id)
     end
     
 end

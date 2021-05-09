@@ -125,18 +125,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: JSON.stringify(formData)
             };
 
-            fetch('http://localhost:3000/events', configObj) .then(function(response) {
-                return response.json();
-            })
-            .then(function(json) {
-                console.log(json)
-                sortEvents(json);
-            })
-            .catch(function(error) {
-                console.log(json);
-                console.log(error);
-                alert(json.errors);
-            });
+            fetch('http://localhost:3000/events', configObj)    
+                .then(response => {
+                    if (response.ok) {
+                        console.log(response.status);
+                        return response.json();
+                    } else {
+                        console.log(response.status);
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        return
+                    }
+                })
+                .then(json => sortEvents(json))
+                .catch(err => console.log('butt'));
             node.remove();
         });
     }
