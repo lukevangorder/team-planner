@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (node.parentNode.className == 'weekend') {
                 newAddBox.style.height = '52%';
             }
-            addSubmitListener(newAddBox);
+            addUpdateListener(newAddBox);
             node.parentNode.insertBefore(newAddBox, node);
         }
     }
