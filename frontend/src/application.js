@@ -8,9 +8,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return response.json();
     }) .then(function(json){
         for(const user of json) {
-            users.push(new User(user.id, user.name, user.role))
+            users.push(new User(user.id, user.name, user.role));
         }
-        console.log(users);
         grabEvents();
     });
 
@@ -63,8 +62,11 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch(`http://localhost:3000/events/${user+1}`) .then(function(response) {
             return response.json();
         }) .then(function(json){
-            let events = json;
-            for (const event of events) {
+            users[user].events = []; //Fucking remove this nonsense Luke
+            for(const event of json){
+                users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));
+            }
+            for (const event of users[user].events) {
                 sortEvents(event);
             }
         });
