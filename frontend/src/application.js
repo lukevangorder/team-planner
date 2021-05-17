@@ -29,37 +29,52 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     };
 
-    function addAddBox(node) {
+    function addAddBox(node, mode='add', event=undefined) {
         for (const newevent of document.getElementsByClassName('newevent')) {
             newevent.remove();
         }
         let newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
-        addForm(newAddBox);
-        if (node.parentNode.querySelector('div').className == 'newevent') {
-            node.parentNode.querySelector('div').remove();
+        if (mode == 'add'){
+            addForm(newAddBox);
+            if (node.parentNode.querySelector('div').className == 'newevent') {
+                node.parentNode.querySelector('div').remove();
+            } else {
+                if (node.parentNode.className == 'weekend') {
+                    newAddBox.style.height = '52%';
+                }
+                addSubmitListener(newAddBox);
+                node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+            }
         } else {
+            newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${event.name}></input>Event Info: <input id='forminfo' type='text' name='info' value=${event.info}>`+
+            `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.starts_at}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
+            "</input><br><br><input type='submit' value='Save Changes'></input></form>";
+            console.log(event.starts_at.getTime());
+            // newAddBox.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'>"+
+            // "</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'>"+
+            // "</input><br><br><input type='submit'></input></form>";
             if (node.parentNode.className == 'weekend') {
                 newAddBox.style.height = '52%';
             }
             addSubmitListener(newAddBox);
-            node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+            node.parentNode.insertBefore(newAddBox, node);
         }
     }
 
-    function addEditBox(node) {
-        console.log('edit');
+    function addEditBox(node, event) {
+        addAddBox(node, 'update', event);
     }
 
     function addChildEvent(dayName, event) {
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
         let newP = document.createElement('p');
-        newP.innerHTML = event.stringyStart + '-' + event.stringyEnd + '\n' + event.info; 
+        newP.innerHTML = event.stringyStart + '-' + event.stringyEnd + '<br>' + event.info; 
         let edit = document.createElement('p');
         edit.innerHTML = 'Edit Event'
         edit.addEventListener('click', function() {
-            addEditBox(edit);
+            addEditBox(edit, event);
         })
         day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
         day.appendChild(newLi);
@@ -121,7 +136,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function addForm(node) {
-        node.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'></input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'></input><br><br><input type='submit'></input></form>";
+        node.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'>"+
+            "</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'>"+
+            "</input><br><br><input type='submit'></input></form>";
     }
 
     function addSubmitListener(node) {
@@ -196,5 +213,25 @@ class Event {
         } else {
             return this.ends_at.getHours() + ':' + minutes;
         }      
+    }
+
+    get formatEnd() {
+        let minutes = String(this.ends_at.getMinutes());
+        if (minutes.length < 2) {
+            minutes = '0' + minutes;
+        }  
+        let month = String(this.ends_at.getMonth());
+        if (month.length < 2) {
+            month = '0'+month;
+        }   
+        let day = String(this.ends_at.getDay());
+        if (day.length < 2) {
+            day = '0'+day;
+        } 
+        let hour = String(this.ends_at.getHours());
+        if (hour.length < 2) {
+            hour = '0'+hour;
+        }
+        return this.ends_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
     }
 }
