@@ -142,3 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 }); 
+
+class Event {
+    
+}
