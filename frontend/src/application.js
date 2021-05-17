@@ -168,9 +168,8 @@ class Event {
     }
 
     get stringyStart() {
-        let minutes = this.starts_at.getMinutes();
-        if (minutes.length < 1) {
-            console.log('workin');
+        let minutes = String(this.starts_at.getMinutes());
+        if (minutes.length < 2) {
             return this.starts_at.getHours() + ':0' + minutes;
         } else {
             return this.starts_at.getHours() + ':' + minutes;
@@ -178,6 +177,11 @@ class Event {
     }
 
     get stringyEnd() {
-        return this.ends_at.getHours() + ':' + this.ends_at.getMinutes()
+        let minutes = String(this.ends_at.getMinutes());
+        if (minutes.length < 2) {
+            return this.ends_at.getHours() + ':0' + minutes;
+        } else {
+            return this.ends_at.getHours() + ':' + minutes;
+        }      
     }
 }
