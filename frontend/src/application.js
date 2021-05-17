@@ -30,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function addAddBox(node) {
+        for (const newevent of document.getElementsByClassName('newevent')) {
+            newevent.remove();
+        }
         let newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
         addForm(newAddBox);
@@ -44,14 +47,24 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    function addEditBox(node) {
+        console.log('edit');
+    }
+
     function addChildEvent(dayName, event) {
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
         let newP = document.createElement('p');
         newP.innerHTML = event.stringyStart + '-' + event.stringyEnd + '\n' + event.info; 
+        let edit = document.createElement('p');
+        edit.innerHTML = 'Edit Event'
+        edit.addEventListener('click', function() {
+            addEditBox(edit);
+        })
         day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
         day.appendChild(newLi);
         day.appendChild(newP); 
+        day.appendChild(edit);
     }
 
     function grabEvents() {
