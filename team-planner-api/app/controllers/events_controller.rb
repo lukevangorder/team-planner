@@ -16,7 +16,6 @@ class EventsController < ApplicationController
         event.info = params[:event][:info]
         start = params[:event][:starts_at]
         endin = params[:event][:ends_at]
-        binding.pry
         event.starts_at = Time.new(start[0,4], start[5,5], start[8,8], start[11,11], start[14,14])
         event.ends_at = Time.new(endin[0,4], endin[5,5], endin[8,8], endin[11,11], endin[14,14])
         if event.save

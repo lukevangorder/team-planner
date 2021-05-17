@@ -1,38 +1,27 @@
 document.addEventListener("DOMContentLoaded", function() {
-
     let user = 0;
     let users = [];
-
-    // Fetch request to get list of all users
-    fetch(`http://localhost:3000/users`) .then(function(response) {
+    fetch(`http://localhost:3000/users`) .then(function(response) { //Fetches all users
         return response.json();
     }) .then(function(json){
         for(const user of json) {
             users.push(new User(user.id, user.name, user.role));
         }
         grabEvents();
-    });
-
-    document.getElementById('previous').addEventListener('click', function() {
+    }); 
+    document.getElementById('previous').addEventListener('click', function() { //Listener to go to previous user
         if (user > 0) { user -= 1; } else { user = users.length-1;} ;
         grabEvents();
-    });
-
-    document.getElementById('next').addEventListener('click', function() {
+    }); 
+    document.getElementById('next').addEventListener('click', function() { //Listener to go to next user
         if (user < users.length-1) { user += 1; } else { user = 0;};
         grabEvents();
-    });
-
-    for (const add of document.getElementsByClassName('addbutton')) {
-        add.addEventListener('click', function() {
-            addAddBox(add);
-        });
-    };
-
-    function addAddBox(node, mode='add', event=undefined) {
-        for (const newevent of document.getElementsByClassName('newevent')) {
-            newevent.remove();
-        }
+    }); 
+    for (const add of document.getElementsByClassName('addbutton')) { //Listener for all add buttons
+        add.addEventListener('click', function() {addAddBox(add);});
+    }; 
+    function addAddBox(node, mode='add', event=undefined) { //Function to add the div for new or used event creation
+        for (const newevent of document.getElementsByClassName('newevent')) {newevent.remove();}
         let newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
         if (mode == 'add'){
@@ -40,29 +29,19 @@ document.addEventListener("DOMContentLoaded", function() {
             if (node.parentNode.querySelector('div').className == 'newevent') {
                 node.parentNode.querySelector('div').remove();
             } else {
-                if (node.parentNode.className == 'weekend') {
-                    newAddBox.style.height = '52%';
-                }
+                if (node.parentNode.className == 'weekend') {newAddBox.style.height = '52%';}
                 addSubmitListener(newAddBox);
                 node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
             }
-        } else {
+        } else { //If added box is for event update
             newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${"'"+event.name+"'"}></input>Event Info: <input id='forminfo' type='text' name='info' value=${"'"+event.info+"'"}>`+
             `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.formatStart}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
             "</input><br><br><input type='submit' value='Save Changes'></input></form>";
-            if (node.parentNode.className == 'weekend') {
-                newAddBox.style.height = '52%';
-            }
+            if (node.parentNode.className == 'weekend') {newAddBox.style.height = '52%';}
             addUpdateListener(newAddBox, event);
             node.parentNode.insertBefore(newAddBox, node);
         }
     }
-
-    function addEditBox(node, event) {
-        addAddBox(node, 'update', event);
-        node.remove();
-    }
-
     function addChildEvent(dayName, event) {
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
@@ -71,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function() {
         let edit = document.createElement('p');
         edit.innerHTML = 'Edit Event'
         edit.addEventListener('click', function() {
-            addEditBox(edit, event);
+            addAddBox(edit, 'update', event);
+            edit.remove()
         })
         day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
         day.appendChild(newLi);
@@ -100,28 +80,28 @@ document.addEventListener("DOMContentLoaded", function() {
     function sortEvents(event) {
         let d = event.starts_at
         let DOW = d.getDay();
-            switch (DOW) {
-                case 0:
-                    addChildEvent('sunday', event);
-                    break;
-                case 1:
-                    addChildEvent('monday', event);
-                    break;
-                case 2:
-                    addChildEvent('tuesday', event);
-                    break;
-                case 3:
-                    addChildEvent('wednesday', event);
-                    break;
-                case 4:
-                    addChildEvent('thursday', event);
-                    break;
-                case 5:
-                    addChildEvent('friday', event);
-                    break;
-                case 6:
-                    addChildEvent('saturday', event);
-                    break;
+        switch (DOW) {
+            case 0:
+                addChildEvent('sunday', event);
+                break;
+            case 1:
+                addChildEvent('monday', event);
+                break;
+            case 2:
+                addChildEvent('tuesday', event);
+                break;
+            case 3:
+                addChildEvent('wednesday', event);
+                break;
+            case 4:
+                addChildEvent('thursday', event);
+                break;
+            case 5:
+                addChildEvent('friday', event);
+                break;
+            case 6:
+                addChildEvent('saturday', event);
+                break;
             }
 
     }
@@ -218,90 +198,3 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 }); 
-
-class User {
-    constructor(id, name, role) {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.events = [];
-    }
-}
-
-class Event {
-    constructor(id, info, name, starts_at, ends_at, user_id) {
-        this.id = id;
-        this.info = info;
-        this.name = name;
-        this.starts_at = new Date (starts_at);
-        this.ends_at = new Date(ends_at);
-        this.user_id = user_id;
-    }
-
-    update(id, info, name, starts_at, ends_at, user_id) {
-        this.id = id;
-        this.info = info;
-        this.name = name;
-        this.starts_at = new Date (starts_at);
-        this.ends_at = new Date(ends_at);
-        this.user_id = user_id;
-    }
-
-    get stringyStart() {
-        let minutes = String(this.starts_at.getMinutes());
-        if (minutes.length < 2) {
-            return this.starts_at.getHours() + ':0' + minutes;
-        } else {
-            return this.starts_at.getHours() + ':' + minutes;
-        }      
-    }
-
-    get stringyEnd() {
-        let minutes = String(this.ends_at.getMinutes());
-        if (minutes.length < 2) {
-            return this.ends_at.getHours() + ':0' + minutes;
-        } else {
-            return this.ends_at.getHours() + ':' + minutes;
-        }      
-    }
-
-    get formatEnd() {
-        let minutes = String(this.ends_at.getMinutes());
-        if (minutes.length < 2) {
-            minutes = '0' + minutes;
-        }  
-        let month = String(this.ends_at.getMonth()+1);
-        if (month.length < 2) {
-            month = '0'+month;
-        }   
-        let day = String(this.ends_at.getDate());
-        if (day.length < 2) {
-            day = '0'+day;
-        } 
-        let hour = String(this.ends_at.getHours());
-        if (hour.length < 2) {
-            hour = '0'+hour;
-        }
-        return this.ends_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
-    }
-
-    get formatStart() {
-        let minutes = String(this.starts_at.getMinutes());
-        if (minutes.length < 2) {
-            minutes = '0' + minutes;
-        }  
-        let month = String(this.starts_at.getMonth()+1);
-        if (month.length < 2) {
-            month = '0'+month;
-        }   
-        let day = String(this.starts_at.getDate());
-        if (day.length < 2) {
-            day = '0'+day;
-        } 
-        let hour = String(this.starts_at.getHours());
-        if (hour.length < 2) {
-            hour = '0'+hour;
-        }
-        return this.starts_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
-    }
-}
