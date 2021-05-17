@@ -167,13 +167,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             })
             .then(json => {
+                removeOutdated(event);
                 event.update(json.id, json.info, json.name, json.starts_at, json.ends_at, user);
                 sortEvents(event);
             })
-            .catch(err => {
-                alert('Invalid Event Data. Please make sure all required fields have been filled out');
-            });
+            .catch(err => {location.reload();});
         node.remove();
         });
+    }
+    function removeOutdated(obsEvent) {
+        events = document.querySelector('li');
+        for (const event of events) {
+            if (obsEvent.innerHTML == event.innerHTML) {
+                event.remove();
+            }
+        }
     }
 }); 
