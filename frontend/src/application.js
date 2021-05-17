@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
             }
         } else {
-            newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${event.name}></input>Event Info: <input id='forminfo' type='text' name='info' value=${event.info}>`+
+            newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${"'"+event.name+"'"}></input>Event Info: <input id='forminfo' type='text' name='info' value=${"'"+event.info+"'"}>`+
             `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.formatStart}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
             "</input><br><br><input type='submit' value='Save Changes'></input></form>";
             if (node.parentNode.className == 'weekend') {
