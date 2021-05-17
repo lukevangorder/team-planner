@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
             node.parentNode.insertBefore(newAddBox, node);
         }
     }
-    function addChildEvent(dayName, event) {
+    function addChildEvent(dayName, event) { //Adds events to calender divs
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
         let newP = document.createElement('p');
@@ -58,8 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
         day.appendChild(newP); 
         day.appendChild(edit);
     }
-
-    function grabEvents() {
+    function grabEvents() { //Grabs all events upon initialization
         for (const eventlist of document.getElementsByClassName('eventlist')) {
             removeAllChildren(eventlist);
         }
@@ -68,16 +67,11 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         }) .then(function(json){
             users[user].events = []; //Fucking remove this nonsense Luke
-            for(const event of json){
-                users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));
-            }
-            for (const event of users[user].events) {
-                sortEvents(event);
-            }
+            for(const event of json){users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));}
+            for (const event of users[user].events) {sortEvents(event);}
         });
     }
-
-    function sortEvents(event) {
+    function sortEvents(event) { //Sorts event by day
         let d = event.starts_at
         let DOW = d.getDay();
         switch (DOW) {
@@ -105,20 +99,15 @@ document.addEventListener("DOMContentLoaded", function() {
             }
 
     }
-
-    function removeAllChildren(parent) {
-        while (parent.firstChild) {
-            parent.removeChild(parent.firstChild);
-        }
+    function removeAllChildren(parent) { //Clears all events from a div
+        while (parent.firstChild) {parent.removeChild(parent.firstChild);}
     }
-
-    function addForm(node) {
+    function addForm(node) { //Adds html for add form
         node.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'>"+
             "</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'>"+
             "</input><br><br><input type='submit'></input></form>";
     }
-
-    function addSubmitListener(node) {
+    function addSubmitListener(node) { //Adds unique listener to add submit buttons
         node.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
             let formData = {
@@ -136,14 +125,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(formData)
             };
-
             fetch('http://localhost:3000/events', configObj)    
                 .then(response => {
-                    if (response.ok) {
-                        console.log(response.status);
-                        return response.json();
+                    if (response.ok) {return response.json();
                     } else {
-                        console.log(response.status);
                         console.log('Looks like there was a problem. Status Code: ' + response.status);
                         return
                     }
@@ -153,8 +138,7 @@ document.addEventListener("DOMContentLoaded", function() {
             node.remove();
         });
     }
-
-    function addUpdateListener(node, event) {
+    function addUpdateListener(node, event) { //Ads unique listener to save changes buttons
         node.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
             let formData = {
@@ -173,12 +157,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 body: JSON.stringify(formData)
             };
-            console.log(formData);
             fetch(`http://localhost:3000/events/${event.id}`, configObj)    
             .then(response => {
-                if (response.ok) {
-                    console.log(response.status);
-                    return response.json();
+                if (response.ok) { return response.json();
                 } else {
                     console.log(response.status);
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
@@ -187,8 +168,6 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(json => {
                 event.update(json.id, json.info, json.name, json.starts_at, json.ends_at, user);
-                console.log(json);
-                console.log(event);
                 sortEvents(event);
             })
             .catch(err => {
