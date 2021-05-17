@@ -166,4 +166,12 @@ class Event {
         this.ends_at = ends_at;
         this.user_id = user_id;
     }
+
+    get stringyStart() {
+        return this.starts_at.getHours() + ':' + this.starts_at.getMinutes()
+    }
+
+    get stringyEnd() {
+        return this.ends_at.getHours() + ':' + this.ends_at.getMinutes()
+    }
 }
