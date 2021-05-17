@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         }) .then(function(json){
             let events = json;
-            console.log(events);
             for (const event of events) {
                 sortEvents(event);
             }
@@ -143,6 +142,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 }); 
+
+class User {
+    
+}
 
 class Event {
     constructor(id, info, name, starts_at, ends_at, user_id) {
