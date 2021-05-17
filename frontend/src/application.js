@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.getElementById('previous').addEventListener('click', function() {
-        if (user > 1) { user -= 1; } else { user = users.length;} ;
+        if (user > 0) { user -= 1; } else { user = users.length-1;} ;
         grabEvents();
     });
 
@@ -144,5 +144,5 @@ document.addEventListener("DOMContentLoaded", function() {
 }); 
 
 class Event {
-    
+
 }
