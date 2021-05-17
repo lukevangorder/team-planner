@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (node.parentNode.className == 'weekend') {
                 newAddBox.style.height = '52%';
             }
-            addUpdateListener(newAddBox);
+            addUpdateListener(newAddBox, event);
             node.parentNode.insertBefore(newAddBox, node);
         }
     }
@@ -172,6 +172,50 @@ document.addEventListener("DOMContentLoaded", function() {
             node.remove();
         });
     }
+
+    function addUpdateListener(node, event) {
+        node.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let formData = {
+                id: event.id,
+                name: document.getElementById('formname').value,
+                info: document.getElementById('forminfo').value,
+                starts_at: document.getElementById('formstart').value,
+                ends_at: document.getElementById('formend').value,
+                user_id: user+1
+            };
+            let configObj = {
+                method: "PATCH",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Accept": "application/json"
+                },
+                body: JSON.stringify(formData)
+            };
+            console.log(formData);
+            fetch(`http://localhost:3000/events/${event.id}`, configObj)    
+            .then(response => {
+                if (response.ok) {
+                    console.log(response.status);
+                    return response.json();
+                } else {
+                    console.log(response.status);
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return
+                }
+            })
+            .then(json => {
+                event.update(json.id, json.info, json.name, json.starts_at, json.ends_at, user);
+                console.log(json);
+                console.log(event);
+                sortEvents(event);
+            })
+            .catch(err => {
+                alert('Invalid Event Data. Please make sure all required fields have been filled out');
+            });
+        node.remove();
+        });
+    }
 }); 
 
 class User {
@@ -185,6 +229,15 @@ class User {
 
 class Event {
     constructor(id, info, name, starts_at, ends_at, user_id) {
+        this.id = id;
+        this.info = info;
+        this.name = name;
+        this.starts_at = new Date (starts_at);
+        this.ends_at = new Date(ends_at);
+        this.user_id = user_id;
+    }
+
+    update(id, info, name, starts_at, ends_at, user_id) {
         this.id = id;
         this.info = info;
         this.name = name;
@@ -216,11 +269,11 @@ class Event {
         if (minutes.length < 2) {
             minutes = '0' + minutes;
         }  
-        let month = String(this.ends_at.getMonth());
+        let month = String(this.ends_at.getMonth()+1);
         if (month.length < 2) {
             month = '0'+month;
         }   
-        let day = String(this.ends_at.getDay());
+        let day = String(this.ends_at.getDate());
         if (day.length < 2) {
             day = '0'+day;
         } 
@@ -236,11 +289,11 @@ class Event {
         if (minutes.length < 2) {
             minutes = '0' + minutes;
         }  
-        let month = String(this.starts_at.getMonth());
+        let month = String(this.starts_at.getMonth()+1);
         if (month.length < 2) {
             month = '0'+month;
         }   
-        let day = String(this.starts_at.getDay());
+        let day = String(this.starts_at.getDate());
         if (day.length < 2) {
             day = '0'+day;
         } 

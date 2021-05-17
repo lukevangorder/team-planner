@@ -13,7 +13,7 @@ User.create(:name => "Grahan Nash", :role => "Design Lead")
 #Week of May 10 - 16
 Event.create(:name => "Team Meeting", :info => "Weekly Staff Meeting featuring gueast speaker Dave from Accounting", :starts_at => Time.new(2021, 5, 10, 14, 00, 00), :ends_at => Time.new(2021, 5, 10, 15, 00, 00), :user_id => 1)
 Event.create(:name => "Budget Review", :info => "Meet with Mark from Accounting to review the monthly budget", :starts_at => Time.new(2021, 5, 10, 16, 00, 00), :ends_at => Time.new(2021, 5, 10, 18, 00, 00), :user_id => 1)
-Event.create(:name => "Lunch with Lucy", :info => "I forgot our last 3 anniversaries, don't forget this time!!!", :starts_at => Time.new(2021, 5, 11, 12, 00, 00), :ends_at => Time.new(2021, 5, 10, 12, 45, 00), :user_id => 1)
+Event.create(:name => "Lunch with Lucy", :info => "I forgot our last 3 anniversaries, don't forget this time!!!", :starts_at => Time.new(2021, 5, 11, 12, 00, 00), :ends_at => Time.new(2021, 5, 11, 12, 45, 00), :user_id => 1)
 Event.create(:name => "Senior Staff Awards Banquet", :info => "All senior staff are invited to this mandatory dinner to see who become crowned team member of the month!", :starts_at => Time.new(2021, 5, 15, 18, 00, 00), :ends_at => Time.new(2021, 5, 15, 22, 00, 00), :user_id => 1)
 Event.create(:name => "Team Meeting", :info => "Weekly Staff Meeting featuring gueast speaker Dave from Accounting", :starts_at => Time.new(2021, 5, 10, 14, 00, 00), :ends_at => Time.new(2021, 5, 10, 15, 00, 00), :user_id => 2)
 Event.create(:name => "New Candidate Interviews", :info => "Meet with Bryan in HR", :starts_at => Time.new(2021, 5, 14, 10, 30, 00), :ends_at => Time.new(2021, 5, 14, 14, 45, 00), :user_id => 2)
