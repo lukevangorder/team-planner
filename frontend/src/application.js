@@ -144,7 +144,12 @@ document.addEventListener("DOMContentLoaded", function() {
 }); 
 
 class User {
-    
+    constructor(id, name, role) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.events = [];
+    }
 }
 
 class Event {
