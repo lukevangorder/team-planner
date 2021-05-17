@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
         let newP = document.createElement('p');
-        newP.innerHTML = event.info; 
+        newP.innerHTML = event.stringyStart + '-' + event.stringyEnd + '\n' + event.info; 
         day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
         day.appendChild(newLi);
         day.appendChild(newP); 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function sortEvents(event) {
-        let d = new Date(event.starts_at)
+        let d = event.starts_at
         let DOW = d.getDay();
             switch (DOW) {
                 case 0:
@@ -162,13 +162,19 @@ class Event {
         this.id = id;
         this.info = info;
         this.name = name;
-        this.starts_at = starts_at;
-        this.ends_at = ends_at;
+        this.starts_at = new Date (starts_at);
+        this.ends_at = new Date(ends_at);
         this.user_id = user_id;
     }
 
     get stringyStart() {
-        return this.starts_at.getHours() + ':' + this.starts_at.getMinutes()
+        let minutes = this.starts_at.getMinutes();
+        if (minutes.length < 1) {
+            console.log('workin');
+            return this.starts_at.getHours() + ':0' + minutes;
+        } else {
+            return this.starts_at.getHours() + ':' + minutes;
+        }      
     }
 
     get stringyEnd() {
