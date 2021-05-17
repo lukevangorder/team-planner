@@ -48,12 +48,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         } else {
             newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${event.name}></input>Event Info: <input id='forminfo' type='text' name='info' value=${event.info}>`+
-            `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.starts_at}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
+            `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.formatStart}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
             "</input><br><br><input type='submit' value='Save Changes'></input></form>";
-            console.log(event.starts_at.getTime());
-            // newAddBox.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'>"+
-            // "</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'>"+
-            // "</input><br><br><input type='submit'></input></form>";
             if (node.parentNode.className == 'weekend') {
                 newAddBox.style.height = '52%';
             }
@@ -233,5 +229,25 @@ class Event {
             hour = '0'+hour;
         }
         return this.ends_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
+    }
+
+    get formatStart() {
+        let minutes = String(this.starts_at.getMinutes());
+        if (minutes.length < 2) {
+            minutes = '0' + minutes;
+        }  
+        let month = String(this.starts_at.getMonth());
+        if (month.length < 2) {
+            month = '0'+month;
+        }   
+        let day = String(this.starts_at.getDay());
+        if (day.length < 2) {
+            day = '0'+day;
+        } 
+        let hour = String(this.starts_at.getHours());
+        if (hour.length < 2) {
+            hour = '0'+hour;
+        }
+        return this.starts_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
     }
 }
