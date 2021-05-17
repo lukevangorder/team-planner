@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch(`http://localhost:3000/users`) .then(function(response) {
         return response.json();
     }) .then(function(json){
-        users = json;
+        for(const user of json) {
+            users.push(new User(user.id, user.name, user.role))
+        }
+        console.log(users);
         grabEvents();
     });
 
