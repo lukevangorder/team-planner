@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function addEditBox(node, event) {
         addAddBox(node, 'update', event);
+        node.remove();
     }
 
     function addChildEvent(dayName, event) {
