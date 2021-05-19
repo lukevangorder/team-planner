@@ -1,35 +1,52 @@
 document.addEventListener("DOMContentLoaded", function() {
     let user = 0;
     let users = [];
+
     fetch(`http://localhost:3000/users`) .then(function(response) { //Fetches all users
         return response.json();
-    }) .then(function(json){
+    }) .then(function(json) {
         for(const user of json) {
             users.push(new User(user.id, user.name, user.role));
         }
         grabEvents();
     }); 
+
     document.getElementById('previous').addEventListener('click', function() { //Listener to go to previous user
-        if (user > 0) { user -= 1; } else { user = users.length-1;} ;
+        if (user > 0) {
+            user -= 1;
+        } else {
+            user = users.length-1;
+        };
         grabEvents();
     }); 
+
     document.getElementById('next').addEventListener('click', function() { //Listener to go to next user
-        if (user < users.length-1) { user += 1; } else { user = 0;};
+        if (user < users.length-1) {
+            user += 1; 
+        } else { 
+            user = 0;
+        };
         grabEvents();
     }); 
+
     for (const add of document.getElementsByClassName('addbutton')) { //Listener for all add buttons
         add.addEventListener('click', function() {addAddBox(add);});
     }; 
+
     function addAddBox(node, mode='add', event=undefined) { //Function to add the div for new or used event creation
-        for (const newevent of document.getElementsByClassName('newevent')) {newevent.remove();}
+        for (const newevent of document.getElementsByClassName('newevent')) {
+            newevent.remove();
+        }
         let newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
-        if (mode == 'add'){
+        if (mode == 'add') {
             addForm(newAddBox);
             if (node.parentNode.querySelector('div').className == 'newevent') {
                 node.parentNode.querySelector('div').remove();
             } else {
-                if (node.parentNode.className == 'weekend') {newAddBox.style.height = '52%';}
+                if (node.parentNode.className == 'weekend') {
+                    newAddBox.style.height = '52%';
+                }
                 addSubmitListener(newAddBox);
                 node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
             }
@@ -37,11 +54,14 @@ document.addEventListener("DOMContentLoaded", function() {
             newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${"'"+event.name+"'"}></input>Event Info: <input id='forminfo' type='text' name='info' value=${"'"+event.info+"'"}>`+
             `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.formatStart}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
             "</input><br><br><input type='submit' value='Save Changes'></input></form>";
-            if (node.parentNode.className == 'weekend') {newAddBox.style.height = '52%';}
+            if (node.parentNode.className == 'weekend') {
+                newAddBox.style.height = '52%';
+            }
             addUpdateListener(newAddBox, event);
             node.parentNode.insertBefore(newAddBox, node);
         }
     }
+
     function addChildEvent(dayName, event) { //Adds events to calender divs
         let newLi = document.createElement('li');
         newLi.innerHTML = event.name;
@@ -58,74 +78,50 @@ document.addEventListener("DOMContentLoaded", function() {
         day.appendChild(newP); 
         day.appendChild(edit);
     }
+
     function grabEvents() { //Grabs all events upon initialization
-        for (const eventlist of document.getElementsByClassName('eventlist')) {
-            removeAllChildren(eventlist);
-        }
+        removeAllEvents();
         document.querySelector('h2').innerHTML = `Schedule for ${users[user].name}, ${users[user].role}`
         fetch(`http://localhost:3000/events/${user+1}`) .then(function(response) {
             return response.json();
-        }) .then(function(json){
+        }) .then(function(json) {
             users[user].events = []; //Fucking remove this nonsense Luke
-            for(const event of json){users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));}
-            for (const event of users[user].events) {sortEvents(event);}
+            for(const event of json){
+                users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));
+            }
+            for (const event of users[user].events) {
+                sortEvents(event);
+            }
         });
     }
-    function sortEvents(event) { //Sorts event by day
-        let d = event.starts_at
-        let DOW = d.getDay();
-        switch (DOW) {
-            case 0:
-                addChildEvent('sunday', event);
-                break;
-            case 1:
-                addChildEvent('monday', event);
-                break;
-            case 2:
-                addChildEvent('tuesday', event);
-                break;
-            case 3:
-                addChildEvent('wednesday', event);
-                break;
-            case 4:
-                addChildEvent('thursday', event);
-                break;
-            case 5:
-                addChildEvent('friday', event);
-                break;
-            case 6:
-                addChildEvent('saturday', event);
-                break;
-            }
 
+    function removeAllEvents() {
+        for (const eventlist of document.getElementsByClassName('eventlist')) {
+            removeAllChildren(eventlist);
+        }
     }
+
+    function sortEvents(event) { //Sorts event by day
+        const dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
+        addChildEvent(dayNames[event.starts_at.getDay()], event);
+    }
+
     function removeAllChildren(parent) { //Clears all events from a div
-        while (parent.firstChild) {parent.removeChild(parent.firstChild);}
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
     }
+
     function addForm(node) { //Adds html for add form
         node.innerHTML = "<form>Event Name: <input id='formname' type='text' name='name'></input>Event Info: <input id='forminfo' type='text' name='info'>"+
             "</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at'></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at'>"+
             "</input><br><br><input type='submit'></input></form>";
     }
+
     function addSubmitListener(node) { //Adds unique listener to add submit buttons
-        node.querySelector('form').addEventListener('submit', function(e) {
+        node.querySelector('form').addEventListener('submit', (e) => {
             e.preventDefault();
-            let formData = {
-                name: document.getElementById('formname').value,
-                info: document.getElementById('forminfo').value,
-                starts_at: document.getElementById('formstart').value,
-                ends_at: document.getElementById('formend').value,
-                user_id: user+1
-            };
-            let configObj = {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Accept": "application/json"
-                },
-                body: JSON.stringify(formData)
-            };
-            fetch('http://localhost:3000/events', configObj)    
+            fetch('http://localhost:3000/events', fetchConfig('POST'))    
                 .then(response => {
                     if (response.ok) {return response.json();
                     } else {
@@ -141,23 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function addUpdateListener(node, event) { //Ads unique listener to save changes buttons
         node.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
-            let formData = {
-                id: event.id,
-                name: document.getElementById('formname').value,
-                info: document.getElementById('forminfo').value,
-                starts_at: document.getElementById('formstart').value,
-                ends_at: document.getElementById('formend').value,
-                user_id: user+1
-            };
-            let configObj = {
-                method: "PATCH",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Accept": "application/json"
-                },
-                body: JSON.stringify(formData)
-            };
-            fetch(`http://localhost:3000/events/${event.id}`, configObj)    
+            fetch(`http://localhost:3000/events/${event.id}`, fetchConfig('PATCH'))    
             .then(response => {
                 if (response.ok) { return response.json();
                 } else {
@@ -182,5 +162,23 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.remove();
             }
         }
+    }
+
+    function fetchConfig(method) {
+        const configObj = {
+            method: `${method}`,
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                name: document.getElementById('formname').value,
+                info: document.getElementById('forminfo').value,
+                starts_at: document.getElementById('formstart').value,
+                ends_at: document.getElementById('formend').value,
+                user_id: user+1
+            })
+        };
+        return configObj;
     }
 }); 

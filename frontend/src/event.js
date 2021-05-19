@@ -7,7 +7,6 @@ class Event {
         this.ends_at = new Date(ends_at);
         this.user_id = user_id;
     }
-
     update(id, info, name, starts_at, ends_at, user_id) {
         this.id = id;
         this.info = info;
@@ -16,25 +15,22 @@ class Event {
         this.ends_at = new Date(ends_at);
         this.user_id = user_id;
     }
-
     get stringyStart() {
-        let minutes = String(this.starts_at.getMinutes());
+        const minutes = String(this.starts_at.getMinutes());
         if (minutes.length < 2) {
             return this.starts_at.getHours() + ':0' + minutes;
         } else {
             return this.starts_at.getHours() + ':' + minutes;
-        }      
+        }
     }
-
     get stringyEnd() {
-        let minutes = String(this.ends_at.getMinutes());
+        const minutes = String(this.ends_at.getMinutes());
         if (minutes.length < 2) {
             return this.ends_at.getHours() + ':0' + minutes;
         } else {
             return this.ends_at.getHours() + ':' + minutes;
         }      
     }
-
     get formatEnd() {
         let minutes = String(this.ends_at.getMinutes());
         if (minutes.length < 2) {
@@ -54,7 +50,6 @@ class Event {
         }
         return this.ends_at.getFullYear() +'-'+ month +'-'+ day +'T'+ hour +':'+ minutes
     }
-
     get formatStart() {
         let minutes = String(this.starts_at.getMinutes());
         if (minutes.length < 2) {
