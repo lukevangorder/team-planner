@@ -40,16 +40,13 @@ document.addEventListener("DOMContentLoaded", function() {
         let newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
         if (mode == 'add') {
+            removeAddBoxes();
             addForm(newAddBox);
-            if (node.parentNode.querySelector('div').className == 'newevent') {
-                node.parentNode.querySelector('div').remove();
-            } else {
-                if (node.parentNode.className == 'weekend') {
-                    newAddBox.style.height = '52%';
-                }
-                addSubmitListener(newAddBox);
-                node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
+            if (node.parentNode.className == 'weekend') {
+                newAddBox.style.height = '52%';
             }
+            addSubmitListener(newAddBox);
+            node.parentNode.insertBefore(newAddBox, node.parentNode.querySelector('div'));
         } else { //If added box is for event update
             newAddBox.innerHTML = `<form>Event Name: <input id='formname' type='text' name='name' value=${"'"+event.name+"'"}></input>Event Info: <input id='forminfo' type='text' name='info' value=${"'"+event.info+"'"}>`+
             `</input>Starts At: <input id='formstart' type='datetime-local' name='starts_at' value=${event.formatStart}></input><br> Ends At: <br><input id='formend' type='datetime-local' name='ends_at' value=${event.formatEnd}>`+
@@ -59,6 +56,12 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             addUpdateListener(newAddBox, event);
             node.parentNode.insertBefore(newAddBox, node);
+        }
+    }
+
+    function removeAddBoxes() {
+        for (const addBox of document.getElementsByClassName('newevent')) {
+            addBox.remove();
         }
     }
 
@@ -74,13 +77,18 @@ document.addEventListener("DOMContentLoaded", function() {
             edit.remove()
         })
         day = document.getElementById(`${dayName}`).getElementsByClassName('eventlist')[0];
-        day.appendChild(newLi);
-        day.appendChild(newP); 
+        appendEventInfo(day, newLi, newP, edit);
+    }
+
+    function appendEventInfo(day, li, p, edit) {
+        day.appendChild(li);
+        day.appendChild(p); 
         day.appendChild(edit);
     }
 
     function grabEvents() { //Grabs all events upon initialization
         removeAllEvents();
+        removeAddBoxes();
         document.querySelector('h2').innerHTML = `Schedule for ${users[user].name}, ${users[user].role}`
         fetch(`http://localhost:3000/events/${user+1}`) .then(function(response) {
             return response.json();
@@ -134,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
             node.remove();
         });
     }
+
     function addUpdateListener(node, event) { //Ads unique listener to save changes buttons
         node.querySelector('form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -141,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => {
                 if (response.ok) { return response.json();
                 } else {
-                    console.log(response.status);
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return
                 }
@@ -155,6 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
         node.remove();
         });
     }
+
     function removeOutdated(obsEvent) {
         events = document.querySelector('li');
         for (const event of events) {
