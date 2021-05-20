@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (const newevent of document.getElementsByClassName('newevent')) {
             newevent.remove();
         }
-        let newAddBox = document.createElement('div');
+        const newAddBox = document.createElement('div');
         newAddBox.className = 'newevent'
         if (mode == 'add') {
             removeAddBoxes();
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         newP.innerHTML = event.stringyStart + '-' + event.stringyEnd + '<br>' + event.info; 
         let edit = document.createElement('p');
         edit.innerHTML = 'Edit Event'
-        edit.addEventListener('click', function() {
+        edit.addEventListener('click', () => {
             addAddBox(edit, 'update', event);
             edit.remove()
         })
@@ -94,16 +94,20 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         }) .then(function(json) {
             users[user].events = []; //Fucking remove this nonsense Luke
-            for(const event of json){
-                users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));
-            }
+            newEvents(json);
             for (const event of users[user].events) {
                 sortEvents(event);
             }
         });
     }
 
-    function removeAllEvents() {
+    const newEvents = (json) => {
+        for(const event of json){
+            users[user].events.push(new Event(event.id, event.info, event.name, event.starts_at, event.ends_at, event.user_id));
+        }
+    }
+
+    const removeAllEvents = () => {
         for (const eventlist of document.getElementsByClassName('eventlist')) {
             removeAllChildren(eventlist);
         }
@@ -164,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function removeOutdated(obsEvent) {
+    const removeOutdated = (obsEvent) => {
         events = document.querySelector('li');
         for (const event of events) {
             if (obsEvent.innerHTML == event.innerHTML) {
@@ -173,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function fetchConfig(method) {
+    const fetchConfig = (method) => {
         const configObj = {
             method: `${method}`,
             headers: {
